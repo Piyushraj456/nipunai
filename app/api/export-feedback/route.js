@@ -6,16 +6,6 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-let puppeteer;
-let isProd = process.env.NODE_ENV === 'production';
-
-if (isProd) {
-  const chromium = await import('chrome-aws-lambda');
-  puppeteer = chromium.puppeteer;
-} else {
-  puppeteer = await import('puppeteer');
-}
-
 export async function POST(req) {
   try {
     const { interviewId, email } = await req.json();
@@ -23,7 +13,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Missing interviewId or email' }, { status: 400 });
     }
 
-    // Get DB data
+    // DB Fetch
     const feedbackData = await db
       .select()
       .from(UserAnswer)
@@ -37,9 +27,7 @@ export async function POST(req) {
 
     const meta = interviewMeta[0];
 
-  
-    // Construct HTML
-    const html = `
+   const html = `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -118,13 +106,19 @@ export async function POST(req) {
       </html>
     `;
 
-    // Launch browser (env-aware)
+    const isProd = process.env.NODE_ENV === 'production';
+
+    // Dynamically import puppeteer (important!)
+    const puppeteer = isProd
+      ? (await import('chrome-aws-lambda')).puppeteer
+      : await import('puppeteer');
+
     const browser = await puppeteer.launch({
       args: isProd ? (await import('chrome-aws-lambda')).args : [],
       executablePath: isProd
         ? await (await import('chrome-aws-lambda')).executablePath
         : undefined,
-      headless: isProd ? true : 'new', // 'new' for Puppeteer v21+, true for older
+      headless: true,
     });
 
     const page = await browser.newPage();
@@ -143,6 +137,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Empty PDF generated' }, { status: 500 });
     }
 
+    // Send Email
     await resend.emails.send({
       from: 'Interview AI <onboarding@resend.dev>',
       to: email,
