@@ -16,23 +16,7 @@ const HeaderFront = () => {
             </a>
           </div>
 
-          {/* Nav Links */}
-          {/* <div className="hidden md:block">
-            <nav aria-label="Global">
-              <ul className="flex items-center gap-6 text-sm">
-                {["About", "Careers", "History", "Services", "Projects", "Blog"].map((item) => (
-                  <li key={item}>
-                    <a
-                      className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                      href="#"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div> */}
+    
 
           {/* Buttons & Mobile Menu */}
           <div className="flex items-center gap-4">

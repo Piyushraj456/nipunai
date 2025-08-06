@@ -80,7 +80,7 @@ const Interview = () => {
           <div className="flex flex-col items-center">
             <Webcam
               ref={webcamRef}
-              audio={true}
+              audio={false}
               mirrored={true}
               screenshotFormat="image/jpeg"
               videoConstraints={{

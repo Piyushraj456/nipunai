@@ -225,7 +225,7 @@ const RecordAnswerSection = ({ mockInterviewQuestions, activeQuestionIndex, mock
           {webCamEnabled ? (
             <Webcam
               ref={webcamRef}
-              audio={true}
+              audio={false}
               mirrored={true}
               screenshotFormat="image/jpeg"
               videoConstraints={{ width: 1280, height: 720, facingMode: "user" }}

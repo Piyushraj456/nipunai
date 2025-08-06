@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import Link from "next/link";
 import { usePathname } from 'next/navigation'
 import React, { useState } from 'react'
 import { Menu, X } from 'lucide-react'
@@ -27,23 +28,17 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between p-4 bg-secondary shadow-md relative">
       {/* Logo */}
-      <Image src="/logo.svg" width={160} height={100} alt="logo" />
+      <Link href="/dashboard">
+  <Image
+    src="/logo.svg"
+    width={160}
+    height={100}
+    alt="logo"
+    className="cursor-pointer"
+  />
+</Link>
 
-      {/* Desktop Nav */}
-      {/* <nav className="hidden md:flex gap-6">
-        {navLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            className={`transition-all cursor-pointer hover:text-purple-500 hover:font-bold ${
-              isActive(link.href) ? 'text-purple-500 font-bold' : ''
-            }`}
-          >
-            {link.label}
-          </a>
-        ))}
-      </nav> */}
-
+  
       {/* Mobile Menu Button */}
       <button
         onClick={() => setMobileMenuOpen((prev) => !prev)}
